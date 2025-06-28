@@ -18,6 +18,13 @@ void processInput(GLFWwindow* window);
 enum BRICKTYPE { REFLECTIVE, DESTRUCTABLE };
 enum ONOFF { ON, OFF };
 
+//Global variables
+
+
+int score = 0;
+HDC hdc;
+GLuint fontBase;
+
 class Brick
 {
 public:
@@ -85,8 +92,9 @@ public:
 		if (brk->onoff == OFF) return;
 
 		// Generic brick collision check
-		if ((x > brk->x - brk->width / 2 && x < brk->x + brk->width / 2) &&
-			(y > brk->y - brk->height / 2 && y < brk->y + brk->height / 2))
+		if ((x + radius > brk->x - brk->width / 2 && x - radius < brk->x + brk->width / 2) &&
+			(y + radius > brk->y - brk->height / 2 && y - radius < brk->y + brk->height / 2))
+
 		{
 			if (brk->brick_type == REFLECTIVE) {
 				dx = -dx;
@@ -94,6 +102,8 @@ public:
 			}
 			else if (brk->brick_type == DESTRUCTABLE) {
 				brk->onoff = OFF;
+				score += 100;
+				printf("Hit destructible brick at (%.2f, %.2f)! Score: %d\n", brk->x, brk->y, score);
 			}
 		}
 
@@ -154,6 +164,16 @@ Brick paddle(REFLECTIVE, 0.0f, -0.9f, 0.4f, 0.05f, 1.0f, 1.0f, 1.0f);
 
 
 
+void drawText(float x, float y, const char* str) {
+	glColor3f(1.0f, 1.0f, 1.0f);  // White text
+	glRasterPos2f(x, y);
+	glPushAttrib(GL_LIST_BIT);
+	glListBase(fontBase - 32);
+	glCallLists(strlen(str), GL_UNSIGNED_BYTE, str);
+	glPopAttrib();
+}
+
+
 
 int main(void) {
 	srand(time(NULL));
@@ -170,6 +190,13 @@ int main(void) {
 		exit(EXIT_FAILURE);
 	}
 	glfwMakeContextCurrent(window);
+
+
+	hdc = wglGetCurrentDC();
+	fontBase = glGenLists(96);
+	SelectObject(hdc, GetStockObject(SYSTEM_FONT));
+	wglUseFontBitmaps(hdc, 32, 96, fontBase);
+
 	glfwSwapInterval(1);
 
 	vector<Brick> bricks;
@@ -216,13 +243,17 @@ int main(void) {
 
 		//  THEN UPDATE AND DRAW REMAINING BALLS
 		for (int i = 0; i < world.size(); i++) {
+			world[i].MoveOneStep();  // Move FIRST
+
 			for (Brick& b : bricks) {
-				world[i].CheckCollision(&b);
+				world[i].CheckCollision(&b);  // Then check collisions
 			}
+
 			world[i].CheckCollision(&paddle);
-			world[i].MoveOneStep();
 			world[i].DrawCircle();
 		}
+
+
 
 	
 		// Game Over check
@@ -248,7 +279,12 @@ int main(void) {
 		paddle.drawBrick();
 
 
+		char buffer[32];
+		sprintf_s(buffer, sizeof(buffer), "Score: %d", score);
+		drawText(-0.95f, 0.90f, buffer);  // Top-left corner
+
 		glfwSwapBuffers(window);
+
 		glfwPollEvents();
 	}
 
