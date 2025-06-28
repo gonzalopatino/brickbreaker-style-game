@@ -81,18 +81,34 @@ public:
 
 	void CheckCollision(Brick* brk)
 	{
-		if (brk->brick_type == REFLECTIVE)
+		if (brk->onoff == OFF) return;
+
+		// Generic brick collision check
+		if ((x > brk->x - brk->width / 2 && x < brk->x + brk->width / 2) &&
+			(y > brk->y - brk->height / 2 && y < brk->y + brk->height / 2))
 		{
-			if ((x > brk->x - brk->width && x <= brk->x + brk->width) &&
-				(y > brk->y - brk->height && y <= brk->y + brk->height))
-			{
-				// Invert both X and Y directions on reflection
+			if (brk->brick_type == REFLECTIVE) {
 				dx = -dx;
 				dy = -dy;
+			}
+			else if (brk->brick_type == DESTRUCTABLE) {
+				brk->onoff = OFF;
+			}
+		}
+
+		// Paddle-specific logic
+		
+		if (brk->brick_type == REFLECTIVE && brk->y < -0.85f) { // Heuristic to identify paddle
+			if ((x > brk->x - brk->width / 2 && x < brk->x + brk->width / 2) &&
+				(y - radius < brk->y + brk->height / 2 && y > brk->y)) // From top
+			{
+				dy = fabs(dy); // Bounce upward
+				y = brk->y + brk->height / 2 + radius + 0.001f; // Avoid sticking
 			}
 		}
 
 	}
+
 
 	int GetRandomDirection()
 	{
@@ -193,6 +209,8 @@ int main(void) {
 			for (Brick& b : bricks) {
 				world[i].CheckCollision(&b);
 			}
+
+			world[i].CheckCollision(&paddle); //  after brick loop
 
 			world[i].MoveOneStep();
 			world[i].DrawCircle();
