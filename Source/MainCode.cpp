@@ -61,39 +61,37 @@ public:
 	float radius;
 	float x;
 	float y;
-	float speed = 0.03;
-	int direction; // 1=up 2=right 3=down 4=left 5 = up right   6 = up left  7 = down right  8= down left
+	float dx, dy;
+	float speed;
 
-	Circle(double xx, double yy, double rr, int dir, float rad, float r, float g, float b)
+
+	Circle(float xx, float yy, float rr, float dx_, float dy_, float rad, float r, float g, float b)
 	{
 		x = xx;
 		y = yy;
-		radius = rr;
+		radius = rad;
 		red = r;
 		green = g;
 		blue = b;
-		radius = rad;
-		direction = dir;
+		dx = dx_;
+		dy = dy_;
+		speed = 0.02f;
 	}
+
 
 	void CheckCollision(Brick* brk)
 	{
 		if (brk->brick_type == REFLECTIVE)
 		{
-			if ((x > brk->x - brk->width && x <= brk->x + brk->width) && (y > brk->y - brk->width && y <= brk->y + brk->width))
+			if ((x > brk->x - brk->width && x <= brk->x + brk->width) &&
+				(y > brk->y - brk->height && y <= brk->y + brk->height))
 			{
-				direction = GetRandomDirection();
-				x = x + 0.03;
-				y = y + 0.04;
+				// Invert both X and Y directions on reflection
+				dx = -dx;
+				dy = -dy;
 			}
 		}
-		else if (brk->brick_type == DESTRUCTABLE)
-		{
-			if ((x > brk->x - brk->width && x <= brk->x + brk->width) && (y > brk->y - brk->width && y <= brk->y + brk->width))
-			{
-				brk->onoff = OFF;
-			}
-		}
+
 	}
 
 	int GetRandomDirection()
@@ -103,52 +101,18 @@ public:
 
 	void MoveOneStep()
 	{
-		if (direction == 1 || direction == 5 || direction == 6)  // up
-		{
-			if (y > -1 + radius)
-			{
-				y -= speed;
-			}
-			else
-			{
-				direction = GetRandomDirection();
-			}
-		}
+		x += dx * speed;
+		y += dy * speed;
 
-		if (direction == 2 || direction == 5 || direction == 7)  // right
-		{
-			if (x < 1 - radius)
-			{
-				x += speed;
-			}
-			else
-			{
-				direction = GetRandomDirection();
-			}
-		}
+		// Bounce horizontally
+		if (x - radius < -1.0f || x + radius > 1.0f)
+			dx = -dx;
 
-		if (direction == 3 || direction == 7 || direction == 8)  // down
-		{
-			if (y < 1 - radius) {
-				y += speed;
-			}
-			else
-			{
-				direction = GetRandomDirection();
-			}
-		}
-
-		if (direction == 4 || direction == 6 || direction == 8)  // left
-		{
-			if (x > -1 + radius) {
-				x -= speed;
-			}
-			else
-			{
-				direction = GetRandomDirection();
-			}
-		}
+		// Bounce vertically
+		if (y - radius < -1.0f || y + radius > 1.0f)
+			dy = -dy;
 	}
+
 
 	void DrawCircle()
 	{
@@ -261,13 +225,17 @@ void processInput(GLFWwindow* window)
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		double r, g, b;
-		r = rand() / 10000;
-		g = rand() / 10000;
-		b = rand() / 10000;
-		Circle B(0, 0, 0.2f, 2, 0.05f, r, g, b);
+		float r = static_cast<float>(rand() % 1000) / 1000.0f;
+		float g = static_cast<float>(rand() % 1000) / 1000.0f;
+		float b = static_cast<float>(rand() % 1000) / 1000.0f;
+
+		float angle = static_cast<float>((rand() % 360)) * DEG2RAD;
+		float dx = cos(angle);
+		float dy = sin(angle);
+		Circle B(0.0f, 0.0f, 0.2f, dx, dy, 0.05f, r, g, b);
 		world.push_back(B);
 	}
+
 
 	// Paddle movement
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)

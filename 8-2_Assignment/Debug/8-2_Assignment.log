@@ -23,15 +23,6 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(1
       see previous definition of 'APIENTRY'
   
 C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(13,31): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(64,16): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(69,7): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(70,7): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(71,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(86,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(87,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(173,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(227,21): warning C4018: '<': signed/unsigned mismatch
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(268,40): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(268,37): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(268,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(137,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(191,21): warning C4018: '<': signed/unsigned mismatch
   8-2_Assignment.vcxproj -> C:\CS330Content\CS330Content\Projects\8-2_Assignment\Debug\8-2_Assignment.exe
