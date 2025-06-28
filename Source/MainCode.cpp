@@ -179,10 +179,25 @@ int main(void) {
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);
 
-	Brick brick(REFLECTIVE, 0.5, -0.33, 0.2, 1, 1, 0);
-	Brick brick2(DESTRUCTABLE, -0.5, 0.33, 0.2, 0, 1, 0);
-	Brick brick3(DESTRUCTABLE, -0.5, -0.33, 0.2, 0, 1, 1);
-	Brick brick4(REFLECTIVE, 0, 0, 0.2, 1, 0.5, 0.5);
+	vector<Brick> bricks;
+	float startX = -0.9f;
+	float startY = 0.8f;
+	float gap = 0.05f;
+	float width = 0.15f;
+
+	for (int row = 0; row < 4; row++) {
+		for (int col = 0; col < 5; col++) {
+			float x = startX + col * (width + gap);
+			float y = startY - row * (width + gap);
+			BRICKTYPE type = (row % 2 == 0) ? REFLECTIVE : DESTRUCTABLE;
+			float r = (type == REFLECTIVE) ? 1.0f : 0.0f;
+			float g = (type == DESTRUCTABLE) ? 1.0f : 0.5f;
+			float b = (col % 2 == 0) ? 0.5f : 1.0f;
+
+			bricks.emplace_back(type, x, y, width, r, g, b);
+		}
+	}
+
 
 	while (!glfwWindowShouldClose(window)) {
 		//Setup View
@@ -198,19 +213,19 @@ int main(void) {
 		//Movement
 		for (int i = 0; i < world.size(); i++)
 		{
-			world[i].CheckCollision(&brick);
-			world[i].CheckCollision(&brick2);
-			world[i].CheckCollision(&brick3);
-			world[i].CheckCollision(&brick4);
+			for (Brick& b : bricks) {
+				world[i].CheckCollision(&b);
+			}
+
 			world[i].MoveOneStep();
 			world[i].DrawCircle();
 
 		}
 
-		brick.drawBrick();
-		brick2.drawBrick();
-		brick3.drawBrick();
-		brick4.drawBrick();
+		//1st change
+		for (Brick& b : bricks) {
+			b.drawBrick();
+		}
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

@@ -30,17 +30,10 @@ C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(68,12):
 C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(83,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(84,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(167,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(182,38): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(182,31): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(183,41): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(183,35): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(184,42): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(184,35): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(185,33): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(199,21): warning C4018: '<': signed/unsigned mismatch
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(220,2): warning C4551: function call missing argument list
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(236,37): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(236,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(236,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(236,25): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(214,21): warning C4018: '<': signed/unsigned mismatch
+C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(235,2): warning C4551: function call missing argument list
+C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(251,37): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(251,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(251,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\CS330Content\CS330Content\Projects\8-2_Assignment\Source\MainCode.cpp(251,25): warning C4305: 'argument': truncation from 'double' to 'float'
   8-2_Assignment.vcxproj -> C:\CS330Content\CS330Content\Projects\8-2_Assignment\Debug\8-2_Assignment.exe
