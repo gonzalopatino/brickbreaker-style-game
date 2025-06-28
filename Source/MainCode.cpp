@@ -180,21 +180,27 @@ int main(void) {
 	glfwSwapInterval(1);
 
 	vector<Brick> bricks;
-	float startX = -0.9f;
-	float startY = 0.8f;
-	float gap = 0.05f;
-	float width = 0.15f;
+
+	float startX = -0.85f;
+	float startY = 0.85f;
+	float gap = 0.04f;
+	float brickWidths[5] = { 0.1f, 0.12f, 0.14f, 0.12f, 0.1f }; // Predefined sizes
 
 	for (int row = 0; row < 4; row++) {
+		float xOffset = startX;
 		for (int col = 0; col < 5; col++) {
-			float x = startX + col * (width + gap);
+			float width = brickWidths[col];
+			float x = xOffset + width / 2;
 			float y = startY - row * (width + gap);
 			BRICKTYPE type = (row % 2 == 0) ? REFLECTIVE : DESTRUCTABLE;
-			float r = (type == REFLECTIVE) ? 1.0f : 0.0f;
-			float g = (type == DESTRUCTABLE) ? 1.0f : 0.5f;
-			float b = (col % 2 == 0) ? 0.5f : 1.0f;
+
+			float r = 0.2f * row + 0.2f * (col % 2);
+			float g = (type == REFLECTIVE) ? 0.4f + 0.1f * col : 1.0f - 0.1f * row;
+			float b = (col % 2 == 0) ? 1.0f - 0.2f * row : 0.5f;
 
 			bricks.emplace_back(type, x, y, width, r, g, b);
+
+			xOffset += width + gap;  // Increment by current width
 		}
 	}
 
@@ -232,7 +238,7 @@ int main(void) {
 	}
 
 	glfwDestroyWindow(window);
-	glfwTerminate;
+	glfwTerminate();
 	exit(EXIT_SUCCESS);
 }
 
