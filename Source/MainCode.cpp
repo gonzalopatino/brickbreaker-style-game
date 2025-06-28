@@ -10,6 +10,7 @@
 #include <time.h>
 
 using namespace std;
+bool ballEverLaunched = false;
 
 const float DEG2RAD = 3.14159 / 180;
 
@@ -257,7 +258,7 @@ int main(void) {
 
 	
 		// Game Over check
-		if (world.empty()) {
+		if (ballEverLaunched && world.empty()) {
 			glColor3f(1.0f, 0.0f, 0.0f); // Red rectangle
 			glBegin(GL_QUADS);
 			glVertex2f(-0.4f, 0.0f);
@@ -265,7 +266,23 @@ int main(void) {
 			glVertex2f(0.4f, -0.1f);
 			glVertex2f(-0.4f, -0.1f);
 			glEnd();
+
+			drawText(-0.2f, -0.15f, "Game Over");
 		}
+
+		// WIN condition check
+		bool allDestroyed = true;
+		for (const Brick& b : bricks) {
+			if (b.brick_type == DESTRUCTABLE && b.onoff == ON) {
+				allDestroyed = false;
+				break;
+			}
+		}
+		if (allDestroyed) {
+			drawText(-0.2f, 0.0f, "You Win!");
+		}
+
+
 
 
 
@@ -296,11 +313,10 @@ int main(void) {
 
 void processInput(GLFWwindow* window)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
+		ballEverLaunched = true; // NEW LINE
+
 		float r = static_cast<float>(rand() % 1000) / 1000.0f;
 		float g = static_cast<float>(rand() % 1000) / 1000.0f;
 		float b = static_cast<float>(rand() % 1000) / 1000.0f;
@@ -311,6 +327,7 @@ void processInput(GLFWwindow* window)
 		Circle B(0.0f, 0.0f, 0.2f, dx, dy, 0.05f, r, g, b);
 		world.push_back(B);
 	}
+
 
 
 	// Paddle movement
