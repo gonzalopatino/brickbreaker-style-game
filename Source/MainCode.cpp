@@ -1,4 +1,5 @@
 #include <GLFW\glfw3.h>
+
 #include "linmath.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -124,10 +125,11 @@ public:
 		if (x - radius < -1.0f || x + radius > 1.0f)
 			dx = -dx;
 
-		// Bounce vertically
-		if (y - radius < -1.0f || y + radius > 1.0f)
-			dy = -dy;
+		//  Bounce only at the top
+		if (y + radius > 1.0f)
+			dy = -fabs(dy); // Bounce downward
 	}
+
 
 
 	void DrawCircle()
@@ -140,6 +142,10 @@ public:
 		}
 		glEnd();
 	}
+
+	bool isOutOfBounds() const {
+		return y + radius < -1.0f;
+	}
 };
 
 
@@ -151,6 +157,7 @@ Brick paddle(REFLECTIVE, 0.0f, -0.9f, 0.4f, 0.05f, 1.0f, 1.0f, 1.0f);
 
 int main(void) {
 	srand(time(NULL));
+	
 
 	if (!glfwInit()) {
 		exit(EXIT_FAILURE);
@@ -203,19 +210,34 @@ int main(void) {
 
 		processInput(window);
 
-		//Movement
-		for (int i = 0; i < world.size(); i++)
-		{
+		//  REMOVE OUT-OF-BOUNDS BALLS FIRST
+		world.erase(remove_if(world.begin(), world.end(),
+			[](const Circle& ball) { return ball.isOutOfBounds(); }), world.end());
+
+		//  THEN UPDATE AND DRAW REMAINING BALLS
+		for (int i = 0; i < world.size(); i++) {
 			for (Brick& b : bricks) {
 				world[i].CheckCollision(&b);
 			}
-
-			world[i].CheckCollision(&paddle); //  after brick loop
-
+			world[i].CheckCollision(&paddle);
 			world[i].MoveOneStep();
 			world[i].DrawCircle();
-
 		}
+
+	
+		// Game Over check
+		if (world.empty()) {
+			glColor3f(1.0f, 0.0f, 0.0f); // Red rectangle
+			glBegin(GL_QUADS);
+			glVertex2f(-0.4f, 0.0f);
+			glVertex2f(0.4f, 0.0f);
+			glVertex2f(0.4f, -0.1f);
+			glVertex2f(-0.4f, -0.1f);
+			glEnd();
+		}
+
+
+
 
 		//1st change
 		for (Brick& b : bricks) {
