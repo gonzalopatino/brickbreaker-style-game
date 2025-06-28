@@ -21,29 +21,32 @@ class Brick
 {
 public:
 	float red, green, blue;
-	float x, y, width;
+	float x, y, width, height;
+
 	BRICKTYPE brick_type;
 	ONOFF onoff;
 
-	Brick(BRICKTYPE bt, float xx, float yy, float ww, float rr, float gg, float bb)
+	Brick(BRICKTYPE bt, float xx, float yy, float ww, float hh, float rr, float gg, float bb)
 	{
-		brick_type = bt; x = xx; y = yy, width = ww; red = rr, green = gg, blue = bb;
+		brick_type = bt; x = xx; y = yy; width = ww; height = hh;
+		red = rr; green = gg; blue = bb;
 		onoff = ON;
-	};
+	}
 
 	void drawBrick()
 	{
 		if (onoff == ON)
 		{
-			double halfside = width / 2;
+			double halfW = width / 2;
+			double halfH = height / 2;
 
 			glColor3d(red, green, blue);
 			glBegin(GL_POLYGON);
 
-			glVertex2d(x + halfside, y + halfside);
-			glVertex2d(x + halfside, y - halfside);
-			glVertex2d(x - halfside, y - halfside);
-			glVertex2d(x - halfside, y + halfside);
+			glVertex2d(x + halfW, y + halfH);
+			glVertex2d(x + halfW, y - halfH);
+			glVertex2d(x - halfW, y - halfH);
+			glVertex2d(x - halfW, y + halfH);
 
 			glEnd();
 		}
@@ -161,6 +164,9 @@ public:
 
 
 vector<Circle> world;
+Brick paddle(REFLECTIVE, 0.0f, -0.9f, 0.4f, 0.05f, 1.0f, 1.0f, 1.0f);
+
+
 
 
 int main(void) {
@@ -198,7 +204,8 @@ int main(void) {
 			float g = (type == REFLECTIVE) ? 0.4f + 0.1f * col : 1.0f - 0.1f * row;
 			float b = (col % 2 == 0) ? 1.0f - 0.2f * row : 0.5f;
 
-			bricks.emplace_back(type, x, y, width, r, g, b);
+			bricks.emplace_back(type, x, y, width, width, r, g, b);
+
 
 			xOffset += width + gap;  // Increment by current width
 		}
@@ -233,6 +240,10 @@ int main(void) {
 			b.drawBrick();
 		}
 
+		// Draw the paddle
+		paddle.drawBrick();
+
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
@@ -254,7 +265,18 @@ void processInput(GLFWwindow* window)
 		r = rand() / 10000;
 		g = rand() / 10000;
 		b = rand() / 10000;
-		Circle B(0, 0, 02, 2, 0.05, r, g, b);
+		Circle B(0, 0, 0.2f, 2, 0.05f, r, g, b);
 		world.push_back(B);
 	}
+
+	// Paddle movement
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		paddle.x -= 0.03f;
+
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		paddle.x += 0.03f;
+
+	// Clamp paddle position within screen bounds
+	if (paddle.x < -1.0f + paddle.width / 2) paddle.x = -1.0f + paddle.width / 2;
+	if (paddle.x > 1.0f - paddle.width / 2) paddle.x = 1.0f - paddle.width / 2;
 }
